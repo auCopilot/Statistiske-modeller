@@ -1,0 +1,265 @@
+\documentclass{article}
+
+% -------------------------------------------------
+% Packages
+% -------------------------------------------------
+
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{matlab-prettifier}
+\usepackage{listings}
+\usepackage{blindtext}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{dirtytalk}
+\usepackage{enumitem}
+\usepackage{derivative}
+\usepackage{biblatex}
+\usepackage{svg}
+\usepackage{hyperref}
+\usepackage{bbm}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+% -------------------------------------------------
+% Colors
+% -------------------------------------------------
+
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0}
+
+% -------------------------------------------------
+% Hyperlinks
+% -------------------------------------------------
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% -------------------------------------------------
+% Theorem environments
+% -------------------------------------------------
+
+% Numbered
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% Unnumbered
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{proposition*}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% -------------------------------------------------
+% Equation numbering
+% -------------------------------------------------
+
+% Reset equation numbering at each subsection
+\makeatletter
+\@addtoreset{equation}{subsection}
+\makeatother
+
+% If you want equations to be numbered by subsection,
+% uncomment the following line:
+% \renewcommand{\theequation}{\thesubsection.\arabic{equation}}
+
+% -------------------------------------------------
+% Python / MATLAB code formatting
+% -------------------------------------------------
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{darkgreen},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true
+}
+
+% -------------------------------------------------
+% Page geometry
+% -------------------------------------------------
+
+\geometry{
+    a4paper,
+    total={160mm,250mm},
+    left=25mm,
+    top=30mm,
+    footskip=10mm
+}
+
+% -------------------------------------------------
+% Document settings
+% -------------------------------------------------
+
+\setlength{\parindent}{0pt}
+
+% -------------------------------------------------
+% Title
+% -------------------------------------------------
+
+\title{Monte Carlo Simulation Uge 2}
+\author{Thomas Sejer Canham}
+\date{\today}
+
+% =================================================
+% Document
+% =================================================
+
+\begin{document}
+\section{Week 1}
+\subsection{Likelihood}
+
+We are interested in the likelihood function for a given set of data $y$. This is motivated by the fact that we want to find the parameters $\theta$ that maximize the likelihood of observing the data $y$. The likelihood function is defined as:
+\begin{equation}
+L(\theta) = f(y ; \theta), \quad \theta \in \Theta.
+\end{equation}
+This is to be read as the likelihood is a parameterized function of $\theta$ given the data $y$. $\Theta$ is the parameter space, and the the observed data $y$ belongs to the sample space $\mathcal{Y}$. As per usual, when the observed data is independent, the likelihood function can be expressed as the product of the individual likelihoods:
+\begin{equation}
+L(\theta) = \prod_{i=1}^{n} f(y_i ; \theta), \quad \theta \in \Theta.
+\end{equation}
+where y is a vector of observed data points $y = (y_1, y_2, \ldots, y_n)$. Sometimes it is more convenient to work with the log-likelihood function, which is defined as:
+\begin{equation}
+\ell(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log f(y_i ; \theta), \quad \theta \in \Theta.
+\end{equation}
+From a frequentist perspective, all the information relatated to the parameter $\theta$ is contained in the likelihood function. This is converse to the Bayesian perspective, where we typically have prior information about the parameter or parameter space.
+
+
+We note that we may observe independent and different quantities $y$ and $z$ that separately carry information about the parameters $\theta$. In such cases, the likelihood function can be expressed as the product of the individual likelihoods:
+\begin{equation}
+L(  \theta) = L(y; \theta) L(z; \theta), \quad \theta \in \Theta.
+\end{equation}
+We may find a estimate for $\theta$, to compare it to the maximizing value of the likelihood function, we may define the relative likelihood function as:
+\begin{equation}
+RL(\theta) = \dfrac{L(\theta)}{\max_{\theta' \in \Theta} L(\theta')}, \quad \theta \in \Theta.
+\end{equation}
+
+Finding the maximum likelihood estimate $\hat{\theta}_MLE$ is equivalent to finding the value of $\theta$ that maximizes the likelihood function, or equivalently, the log-likelihood function, as this is a monotonic transformation. Usually, we find the critical points of the likilihood or log-likelihood function by taking the derivative with respect to $\theta$ and setting it equal to zero:
+\begin{equation}
+ \dfrac{\partial L(\theta)}{\partial \theta} = 0\text{ or }\dfrac{\partial \ell(\theta)}{\partial \theta} = 0.
+\end{equation}
+However, counter examples do exist:
+\begin{example}
+    Consider a random sample of size n from a uniform distribution on the interval $[0, \theta]$, where $\theta \leq 0$. The PDF of the uniform distribution is given by:
+    \begin{equation}
+        f(y; \theta) = \begin{cases}
+            \dfrac{1}{\theta} & \text{if } 0 \geq y \geq \theta, \\
+            0 & \text{otherwise}.
+        \end{cases}
+        \end{equation}
+    And thus the likelihood function is given by:
+\begin{equation}
+    L(\theta) = \prod_{i=1}^{n} f(y_i; \theta) \mathbbm{1}(0 \leq y_i \leq \theta) = \dfrac{1}{\theta^n} \mathbbm{1}(\theta \geq \max\{y_1, \ldots, y_n\})
+\end{equation}
+We see that the likelihood function is a decreasing function of $\theta$ and is only non-zero for values of $\theta$ greater than or equal to the maximum observed value. Therefore, the maximum likelihood estimate is given by $\hat{\theta}_{MLE} = \max\{y_1, \ldots, y_n\}$.
+Suppose we have $n = 3$, then visually we will get the plot:
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines = left,
+            xlabel = {$\theta$},
+            ylabel = {L},
+            ymin = 0,
+            ymax = 0.05,
+            xmin = 0,
+            xmax = 5,
+            xtick = {1,2,3,4,5},
+            ytick = {0,0.01,0.02,0.03,0.04,0.05},
+            grid = major,
+            legend pos = north east,
+        ]
+
+        \addplot[
+            domain = 0:5,
+            samples = 200,
+            blue,
+            thick,
+        ]
+        {x >= 3 ? 1/x^3 : 0};
+
+
+        \end{axis}
+    \end{tikzpicture}
+    \label{fig:likelihood_uniform}
+\end{figure}
+Evidently, the maximum likelihood is not located at a critical point. Instead, the maximum likelihood is located at the boundary of the parameter space.
+$\square$
+\end{example}
+\subsection{Monotone Transformation of the Data}
+The maximum likelihood estimate is invariant under monotone transformations of the data. That is, if we have a monotone transformation $g(y)$ of the data $y$, then the maximum likelihood estimate of $\theta$ based on the transformed data $g(y)$ is the same as the maximum likelihood estimate based on the original data $y$. This property can be useful in practice, as it allows us to work with transformed data that may be easier to analyze or interpret. This follows from (Ute's Notes): \vspace{0.5cm}
+Let $h : Y \to Z$ be a bijective function from $Y$ to a new variable $Z = h(Y)$. Then the likelihood function for $\theta$ based on the transformed data $Z$ is given by:
+\begin{equation}
+    L_Z(\theta) = f_Z(z; \theta) = f_Y(y; \theta) \left| \dfrac{dy}{dz} \right| 
+\end{equation}
+where $\left| \dfrac{dy}{dz} \right|$ is the Jacobian of $h$. We see that this is independant of $\theta$ and thus the maximum likelihood estimate of $\theta$ is invariant, as location remains unchanged, but the value of the likelihood function may change.
+
+\subsection{Re-parameterization}
+We may consider a re-parameterization $\psi = g(\theta)$ where $g$ is a bijective function from the parameter space $\Theta$ to a new parameter space $\Psi$. Then then the following equivalence holds:
+\begin{equation}
+    L_\Theta(\theta) = L_\Psi(g(\theta)) = L_\Psi(\psi)
+\end{equation}
+This means that the maximum likelihood estimate of $\hat{\psi} = g(\hat{\theta})$ where $\hat{\theta}$ is the maximum likelihood estimate of $\theta$. This property can be useful in practice, as it allows us to work with re-parameterized models that may be easier to analyze or interpret.
+
+\subsection{Quadratic Approximation of the Log-Likelihood}
+To consider such approximations it is useful to consider some properties of the taylor expansion. The taylor expansion, presented with the first four terms, is given by:
+\begin{equation}
+f(x) = f(a) + f'(a)(x-a) + \dfrac{f''(a)}{2!}(x-a)^2 + \dfrac{f'''(a)}{3!}(x-a)^3 + R_4
+\end{equation}
+where $R_4$ is the remainder term. The taylor expansion can be used to approximate a function $f(x)$ around a point $a$. Furthermore, using the Lagrange Remainder theorem, where the approximation is given by:
+\begin{equation}
+f(x) = f(a) + f'(a)(x-a) + \dfrac{f''(a)}{2!}(x-a)^2 + \dfrac{f'''(c)}{3!}(x-a)^3 + f''''(c)(x-a)^4
+\end{equation}
+for some $c$ between $a$ and $x$. This is the langrange form of the remainder term, and et guarantees the existence of a point $c$ between $a$ and $x$ such that the remainder is exact. We can use this and the log relative likelihood function to show that the log likelihood is approximately quadratic around the maximum likelihood estimate $\hat{\theta}$. See page 102 of the book. 
+
+\subsection{Sufficient Statistics}
+Sometimes we can find the MLE by using a sufficient statistic. The sufficient statistic is some, hopefully lower dimensional, function of the data that contains all the information about the parameter $\theta$. The formal definition is as follows:
+\begin{definition}
+A statistic $S(y)$ is sufficient for the parameter $\theta$ if the conditional distribution of the data $y$ given the statistic $S(y)$ does not depend on the parameter $\theta$. In other words, once we know the value of the sufficient statistic, we have all the information about $\theta$ that is contained in the data $y$.
+\end{definition}
+A direct consequence is that the conditional distribution of the data $y$ given the sufficient statistic $S(y)$ is independent of the parameter $\theta$, as such
+
+\begin{equation}
+    f_{Y|S}(y|s; \theta) 
+\end{equation}
+does not depend on $\theta$. This means that the likelihood function can be expressed as a function of the sufficient statistic $S(y)$, and we can use this to find the MLE.
+
+We can also use the factorization theorem to find sufficient statistics. The factorization theorem states that a statistic $S(y)$ is sufficient for the parameter $\theta$ if and only if the likelihood function can be factored into two parts: one that depends on the data $y$ only through the statistic $S(y)$, and another that does not depend on the parameter $\theta$. In other words, we can write the likelihood function as:
+\begin{equation}
+L(y; \theta) = g(s(y); \theta) h(y)
+\end{equation}
+where $g$ depends on the data $y$ only through the observed statistic $s(y)$ and $h$ does not depend on the parameter $\theta$.
+
+\subsection{Information}
+The observed information is defined as the negative of the second derivative of the log-likelihood function with respect to the parameter $\theta$:
+\begin{equation}
+    J(\theta) = -\dfrac{\partial^2 \ell(\theta)}{\partial \theta^2}
+\end{equation}
+We have a lot of observered information, when this curvature is large, that is, the log-likelihood function is steep around the maximum likelihood estimate, and low observed information when the curvature is small, that is, the log-likelihood function is flat around the maximum likelihood estimate. \vspace{0.5cm}
+
+Before we conduct an experiment, we can use the Fisher information to quantify the amount of information that we expect to gain about the parameter $\theta$ from the experiment. The Fisher information is defined as the expected value of the observed information:
+\begin{equation}
+    I(\theta) = \mathbb{E}[J(\theta)] = -\mathbb{E}\left[\dfrac{\partial^2 \ell(\theta)}{\partial \theta^2}\right]  
+\end{equation}
+To find the Fisher information in practice, we can replace the yet to be observed data $y$ with the corresponding random variable $Y$ and take the expectation with respect to the distribution of $Y$. 
+
+
+\end{document}
