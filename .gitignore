@@ -1,6 +1,9 @@
 # LaTeX build directories
 **/build/
 
+# pycharm idea
+.idea/
+
 # LaTeX auxiliary files
 *.aux
 *.log
@@ -15,3 +18,4 @@
 *.run.xml
 *.bbl
 *.blg
+.Rproj.user
