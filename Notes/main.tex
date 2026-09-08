@@ -67,14 +67,12 @@
 % Equation numbering
 % -------------------------------------------------
 
-% Reset equation numbering at each subsection
+% Reset equation numbering at each section
 \makeatletter
-\@addtoreset{equation}{subsection}
+\@addtoreset{equation}{section}
 \makeatother
 
-% If you want equations to be numbered by subsection,
-% uncomment the following line:
-% \renewcommand{\theequation}{\thesubsection.\arabic{equation}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
 
 % -------------------------------------------------
 % Python / MATLAB code formatting
@@ -217,7 +215,9 @@ We may consider a re-parameterization $\psi = g(\theta)$ where $g$ is a bijectiv
 \begin{equation}
     L_\Theta(\theta) = L_\Psi(g(\theta)) = L_\Psi(\psi)
 \end{equation}
-This means that the maximum likelihood estimate of $\hat{\psi} = g(\hat{\theta})$ where $\hat{\theta}$ is the maximum likelihood estimate of $\theta$. This property can be useful in practice, as it allows us to work with re-parameterized models that may be easier to analyze or interpret.
+This means that the maximum likelihood estimate of $\hat{\psi} = g(\hat{\theta})$ where $\hat{\theta}$ is the maximum likelihood estimate of $\theta$. This property can be useful in practice, as it allows us to work with re-parameterized models that may be easier to analyze or interpret. \vspace{1em}
+
+Note that the Fisher information is not invariant under re-parameterization. We saw this in Davison excercise 4.3.5,
 
 \subsection{Quadratic Approximation of the Log-Likelihood}
 To consider such approximations it is useful to consider some properties of the taylor expansion. The taylor expansion, presented with the first four terms, is given by:
@@ -228,7 +228,10 @@ where $R_4$ is the remainder term. The taylor expansion can be used to approxima
 \begin{equation}
 f(x) = f(a) + f'(a)(x-a) + \dfrac{f''(a)}{2!}(x-a)^2 + \dfrac{f'''(c)}{3!}(x-a)^3 + f''''(c)(x-a)^4
 \end{equation}
-for some $c$ between $a$ and $x$. This is the langrange form of the remainder term, and et guarantees the existence of a point $c$ between $a$ and $x$ such that the remainder is exact. We can use this and the log relative likelihood function to show that the log likelihood is approximately quadratic around the maximum likelihood estimate $\hat{\theta}$. See page 102 of the book. 
+for some $c$ between $a$ and $x$. This is the langrange form of the remainder term, and et guarantees the existence of a point $c$ between $a$ and $x$ such that the remainder is exact. We can use this and the log relative likelihood function to show that the log likelihood is approximately quadratic around the maximum likelihood estimate $\hat{\theta}$. See page 102 of the book.\vspace{1em}
+
+Furthermore, the approximation is useful when considering numerical routines, such as the Newton-Raphson methods for finding the maximum likelihood estimate. Under quadratic assumptions the Newton-Raphson method converges in one step.
+
 
 \subsection{Sufficient Statistics}
 Sometimes we can find the MLE by using a sufficient statistic. The sufficient statistic is some, hopefully lower dimensional, function of the data that contains all the information about the parameter $\theta$. The formal definition is as follows:
@@ -253,7 +256,7 @@ The observed information is defined as the negative of the second derivative of 
 \begin{equation}
     J(\theta) = -\dfrac{\partial^2 \ell(\theta)}{\partial \theta^2}
 \end{equation}
-We have a lot of observered information, when this curvature is large, that is, the log-likelihood function is steep around the maximum likelihood estimate, and low observed information when the curvature is small, that is, the log-likelihood function is flat around the maximum likelihood estimate. \vspace{0.5cm}
+We have a lot of observered information, when this curvature is large, that is, the log-likelihood function is steep around the maximum likelihood estimate, and low observed information when the curvature is small, that is, the log-likelihood function is flat around the maximum likelihood estimate. Note that we can only speak of large or small curvature in relation to the curvature of the log-likelihood function at other values of $\theta$. This motivates the use of relative likelihood. \vspace{0.5cm}
 
 Before we conduct an experiment, we can use the Fisher information to quantify the amount of information that we expect to gain about the parameter $\theta$ from the experiment. The Fisher information is defined as the expected value of the observed information:
 \begin{equation}
@@ -261,5 +264,18 @@ Before we conduct an experiment, we can use the Fisher information to quantify t
 \end{equation}
 To find the Fisher information in practice, we can replace the yet to be observed data $y$ with the corresponding random variable $Y$ and take the expectation with respect to the distribution of $Y$. 
 
-
+\subsection{Relative Efficiency}
+Assume that we have two distributions A and B, that contain information about the same parameter $\theta$. We can compare the efficiency of the two distributions by comparing their Fisher information. This gives us ground for model selection, as we might be able to choose a model with more or the same information, but with less complexity or work involved. The relative efficiency of distribution A with respect to distribution B is defined as:
+\begin{equation}
+    \dfrac{I_A(\theta)}{I_B(\theta)}
+\end{equation}
+Recall that $i_X(\theta)$ is the Fisher information of a single sample from distribution X. Sampling schemes are said to be equally efficient if
+\begin{equation}
+    \dfrac{i_A(\theta)}{i_B(\theta)} = \dfrac{n_B}{n_A}.
+\end{equation}
+If we rewrite this as
+\begin{equation}
+    n_B = \dfrac{i_A(\theta)}{i_B(\theta)} n_A,
+\end{equation}
+we see that this shows how many samples from distribution B we need to get the same amount of information as $n_A$ samples from distribution A.
 \end{document}

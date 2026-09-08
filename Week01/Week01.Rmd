@@ -1,5 +1,52 @@
 ---
-title: "Week01"
+title: "Practical 4.2"
 output: html_document
 ---
 
+```{r}
+library(SMPracticals)
+data(births)
+
+logL.gam <- function(alpha, y)
+{ muhat <- mean(y)
+L <- dgamma( alpha*y/muhat, shape=alpha )*alpha/muhat
+-sum(log(L)) }
+```
+
+```{r}
+fit <- nlm(logL.gam, 1, hessian=TRUE, y=time)
+alphahat <- fit$estimate
+se.alphahat <- sqrt(diag(solve(fit$hessian))) # sqrt(diagonal of inverse hessian)
+muhat <- mean(time)
+
+# alpha hat interval: 
+alpha_hat <- fit$estimate
+se <- sqrt(1 / fit$hessian)
+
+CIalpha <- c(alpha_hat - 1.96 * se,
+        alpha_hat + 1.96 * se)
+
+```
+
+We have computed the theoretical variance of the $\mu$ parameter. We have the estimate $\hat{\mu} = \bar{y}$, since we have and random sample, iid conditions gives $Var(\bar{Y}) = \dfrac{\mu^2}{n\alpha}$, thus we can approximate the standard error as
+
+$$
+SE(\bar{y}) = \hat{\mu} /\sqrt{n\hat\alpha}
+$$
+
+Since we have an MLE, it is asymptotically Normal, so we get the confidence interval
+
+```{r}
+semu <- muhat / sqrt(length(births[[1]])*alpha_hat)
+CImu <- c(muhat - 1.96 * semu,
+        muhat + 1.96 * semu)
+```
+
+```{r}
+par(pty="s")
+n <- length(time)
+qqplot( mean(time)*qgamma(c(1:n)/(n+1), shape=alphahat)/alphahat, time,
+xlab="Quantile of fitted gamma distribution" )
+abline(0,1,lty=2)
+
+```
