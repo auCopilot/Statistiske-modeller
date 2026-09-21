@@ -279,6 +279,92 @@ If we rewrite this as
 \end{equation}
 we see that this shows how many samples from distribution B we need to get the same amount of information as $n_A$ samples from distribution A.
 
+\section{Week 2}
 
+In week 2 we worked with stochastic convergence, the consistency and asymptotic normality of the maximum likelihood estimator, and the Kullback-Leibler divergence.
 
+\subsection{Stochastic Convergence}
+Stochastic convergence is a fundamental concept in probability theory and statistics. It describes the behavior of a sequence of random variables as the number of observations increases. Note that a sequence is NOT a sample, but rather a fixed behavior of a random variable as the number of observations increases. 
+
+\subsubsection{Example of a Sequence}
+And example of a sequence is the sample mean of a random variable $X$ with finite mean $\mu$ and variance $\sigma^2$. The sample mean is defined as:
+\begin{equation}
+    \bar{X}_n = \dfrac{1}{n} \sum_{i=1}^{n} X_i
+\end{equation}
+So for $n = 1$ we have
+\begin{equation}
+    \bar{X}_1 = X_1
+\end{equation}
+and for $n = 2$ we have
+\begin{equation}
+    \bar{X}_2 = \dfrac{1}{2} (X_1 + X_2)
+\end{equation}
+And so on. Thus the sequence of sample means is given by:
+\begin{equation}
+    \{\bar{X}_n\}_{n=1}^{\infty} = \{\bar{X}_1, \bar{X}_2, \bar{X}_3, \ldots\}
+\end{equation}
+
+\subsection{Modes of Convergence}
+We have seen three different modes of convergence: almost sure convergence, convergence in probability, and convergence in distribution. We will define each of these modes of convergence and discuss their properties.
+
+\subsubsection{Almost Sure Convergence}
+A sequence of random variables $\{X_n\}_{n=1}^{\infty}$ converges almost surely to a random variable $X$ if:
+\begin{equation}
+    P\left(\lim_{n \to \infty} X_n = X\right) = 1
+\end{equation}
+Intuitively, this means that the behavior of the sequence of random variables, will asymptotically match the behavior of the random variable $X$ with probability 1. An example is a sequence $X_n$ on the sample space $\Omega$ such that $X_n(\omega) = \mathbbm{1}(0\leq \omega \leq \dfrac{n+1}{2n})$ if we then let 
+$$
+A = \{\omega \in \Omega : \lim_{n \to \infty} X_n(\omega) = X(\omega)\}
+$$
+where $X(\omega) = \mathbbm{1}(0\leq \omega < \frac{1}{2})$ Then we have to prove that $P(\omega \in A) = 1$. Breifly, we can see that for $\omega < \frac{1}{2}$, $X_n(\omega) = 1$ for all $n$, and for $\omega > \frac{1}{2}$, $X_n(\omega) = 0$ for all $n$. Thus, the only point of concern is $\omega = \frac{1}{2}$, but this is a single point and has probability 0. Therefore, we have that $P(A) = 1$ and thus $X_n \to X$ almost surely. If we have almost sure convergence, then we also have convergence in probability, but the converse is not true, so
+$$X_n \xrightarrow[]{a.s} X \implies X_n \xrightarrow[]{P} X$$
+Most notably, we have the strong law of large numbers, which states that the sample mean converges almost surely to the population mean.
+\begin{equation}
+    \bar{X}_n = \dfrac{1}{n} \sum_{i=1}^{n} X_i \xrightarrow[]{a.s} \mu
+\end{equation}
+
+\subsubsection{Convergence in Probability}
+A sequence of random variables $\{X_n\}_{n=1}^{\infty}$ converges in probability to a random variable $X$ if:
+\begin{equation}
+    P\left(\left|X_n - X\right| > \epsilon\right) \to 0 \quad \text{as } n \to \infty
+\end{equation}
+for every $\epsilon > 0$. This means that the probability that the difference between $X_n$ and $X$ is greater than any positive number $\epsilon$ goes to zero as the number of observations increases. An example is the convergence in probability of the exponential distribution to the degenerate 0 distribution. Let $X_n \sim \text{Exp}(n)$, then we have that
+\begin{equation}
+    P\left(\left|X_n - 0\right| > \epsilon\right) = P(X_n > \epsilon) = e^{-n\epsilon} \to 0 \quad \text{as } n \to \infty
+\end{equation}
+Most notably, we have the weak law of large numbers, which states that the sample mean converges in probability to the population mean. 
+\begin{equation}
+    \bar{X}_n = \dfrac{1}{n} \sum_{i=1}^{n} X_i \xrightarrow[]{P} \mu
+\end{equation}
+
+\subsubsection{Convergence in Distribution}
+A sequence of random variables $\{X_n\}_{n=1}^{\infty}$ converges in distribution to a random variable $X$ if:
+\begin{equation}
+    F_{X_n}(x) \to F_X(x) \quad \text{as } n \to \infty
+\end{equation}
+for all points $x$ where $F_X(x)$ is continuous. Here, $F_{X_n}(x)$ and $F_X(x)$ are the cumulative distribution functions of $X_n$ and $X$, respectively.
+
+\subsection{Slutsky's Lemma}
+This lemma desribes the relation between modes of convergence, let $S_n$ and $U_n$ be sequences of random variables and $S$ and $U$ be random variables and let $s_0$ and $u_0$ be constants. Then we have the following results:
+\begin{lemma}[Slutsky's Lemma]
+    \begin{equation}
+        S_n \xrightarrow[]{P} S \implies S_n \xrightarrow{D} S
+    \end{equation}
+    \begin{equation}
+        S_n \xrightarrow[]{D} s_0 \implies S_n \xrightarrow{P} s_0
+    \end{equation}
+    \begin{equation}
+        S_n \xrightarrow[]{D} S,\, U_n \xrightarrow[]{P} u_0 \implies S_n + U_n \xrightarrow{D} S + u_0, \,S_n U_n \xrightarrow{D} S u_0
+    \end{equation}
+    \end{lemma}
+Note that $S= s_0$ and $U = u_0$ are also valid (degenerate) random variables, thus
+$$S_n \xrightarrow{P} s_0 \iff S_n \xrightarrow{D} s_0$$
+
+\subsection{Kullback-Leibler disrepancy and the Convegence of the MLE}
+
+We can use Jensen's inequality to shot that the Kullback-Leibler discrepancy $D(f_\theta, f_{\theta_0}) \geq 0$. The difference of the mean-log-likelihoods converges almost surely to the negative Kullback-Leibler discrepancy, and thus the difference of the log-likelihoods
+$$\ell(\theta) - \ell(\theta_0) \xrightarrow[]{D} -nD(f_\theta, f_{\theta_0}) \to -infty$$ for $n \to \infty$.
+This mean for any $\delta >0$, there exists a local region around $\theta_0$ such that for any sequence of random variables $Y_n$ there exists a $N$ such that for all $n > N$, there is a interval where $-D(f_{\theta_0-\delta}$ and $-D(f_{\theta_0+\delta})$ are negative, and thus the maximum likelihood will lie in this interval with probability 1. This shows that the maximum likelihood estimator is consistent, that is, it converges in probability to the true parameter value $\theta_0$ as the sample size $n$ increases.
+
+To summarize, we use the Kullback-Leibler discrepancy to prove that the estimator will be squeezed into a local region around the true parameter value $\theta_0$, where values of $\theta$ that are not the true parameter value will have a lower likelihood, and thus the maximum likelihood estimator will converge to the true parameter value as the sample size increases.
 \end{document}

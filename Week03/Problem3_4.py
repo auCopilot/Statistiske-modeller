@@ -30,5 +30,5 @@ df["Diff"] = df["Postwt"] - df["Prewt"]
 sns.boxplot(x="Treat", y="Diff", data=df)
 plt.show()
 
-model = sm.ols("Postwt ~ Prewt * C(Treat)", data=df).fit()
+model = sm.ols('Diff ~ C(Treat, Treatment(reference="Cont"))', data=df).fit()
 print(model.summary())

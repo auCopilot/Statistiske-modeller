@@ -1,0 +1,255 @@
+\documentclass{article}
+
+% -------------------------------------------------
+% Packages
+% -------------------------------------------------
+
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{matlab-prettifier}
+\usepackage{listings}
+\usepackage{blindtext}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{dirtytalk}
+\usepackage{enumitem}
+\usepackage{derivative}
+\usepackage{biblatex}
+\usepackage{svg}
+\usepackage{hyperref}
+
+% -------------------------------------------------
+% Colors
+% -------------------------------------------------
+
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0}
+
+% -------------------------------------------------
+% Hyperlinks
+% -------------------------------------------------
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% -------------------------------------------------
+% Theorem environments
+% -------------------------------------------------
+
+% Numbered
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% Unnumbered
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{proposition*}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% -------------------------------------------------
+% Equation numbering
+% -------------------------------------------------
+
+% Reset equation numbering at each subsection
+\makeatletter
+\@addtoreset{equation}{subsection}
+\makeatother
+
+% If you want equations to be numbered by subsection,
+% uncomment the following line:
+% \renewcommand{\theequation}{\thesubsection.\arabic{equation}}
+
+% -------------------------------------------------
+% Python / MATLAB code formatting
+% -------------------------------------------------
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{darkgreen},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true
+}
+
+% -------------------------------------------------
+% Page geometry
+% -------------------------------------------------
+
+\geometry{
+    a4paper,
+    total={160mm,250mm},
+    left=25mm,
+    top=30mm,
+    footskip=10mm
+}
+
+% -------------------------------------------------
+% Document settings
+% -------------------------------------------------
+
+\setlength{\parindent}{0pt}
+
+% -------------------------------------------------
+% Title
+% -------------------------------------------------
+
+\title{Statistical Models\\Assignment 1}
+\author{Thomas Sejer Canham}
+\date{\today}
+
+% =================================================
+% Document
+% =================================================
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+We are given a geometrically distributed random variable $X$ with PMF:
+ \begin{equation}
+    P(X = k) = (1 - \pi)^{k - 1} \pi, \quad k = 1, 2, 3, \ldots, \quad 0 < \pi < 1
+ \end{equation}
+
+\subsection*{a)}
+We wish to find the moment generating function  of $X$. The MGF is defined as:
+\begin{equation}
+    M_X(t) = E[e^{tX}] = \sum_{k=1}^{\infty} e^{tk} P(X=k) = \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} \pi
+\end{equation}
+We can factor out $\pi$ and rewrite the sum:
+\begin{equation}
+    M_X(t) = \pi \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} = \pi e^t \sum_{k=1}^{\infty} (e^t (1 - \pi))^{k - 1}
+\end{equation}
+now let $q = (1-\pi),$ then we have:
+\begin{equation}
+    M_X(t) = \pi e^t \sum_{k=1}^{\infty} (e^t q)^{k - 1}
+\end{equation}
+We can factor out one division of $q$ of the entire sum, and we have:
+\begin{equation}
+    M_X(t) = \dfrac{\pi}{q} \sum_{k=0}^{\infty} (e^t q)^{k}
+\end{equation}
+Using the hint, we get a geometric series if $|e^t q| < 1$, since the is a product of strictly positive numbers, we can drop the absolute value and we have:
+\begin{equation}
+    e^t q < 1 \implies t + \ln(q) < 0 \implies t < -\ln(q) = -\ln(1-\pi) \label{geom}
+\end{equation}
+Using the formula for the sum of a geometric series, provided we satisfy \eqref{geom}:
+
+\begin{equation}
+    M_X(t) = \dfrac{\pi}{q} \cdot \dfrac{e^tq}{1 - e^t q}  = \dfrac{\pi e^t}{1 - (1 - \pi)e^t}
+\end{equation}
+We can now use this moment generating function to find the mean and variance of $X$. We have:
+\begin{equation}
+    \dfrac{d}{dt}(M_X(t)) = \dfrac{\pi}{q}  \dfrac{d}{dt}\left( \dfrac{e^tq}{1 - e^t q} \right) = \dfrac{\pi}{q} \cdot \dfrac{qe^t}{(1 - qe^t)^2} = \dfrac{\pi e^t}{(1 - qe^t)^2}
+\end{equation}
+Setting $t=0$, we have:
+\begin{equation}
+    \dfrac{d}{dt}(M_X(0))\bigg |_{t=0} = \dfrac{\pi}{(1 - q)^2} = \dfrac{\pi}{\pi^2} = \dfrac{1}{\pi}
+\end{equation}
+We can then find the variance using the formula $\text{Var}(X) = E[X^2] - (E[X])^2$. Using that $E[X]^2 = \dfrac{1}{\pi^2}$. We can find $E[X^2]$ by taking the second derivative of the moment generating function:
+
+\begin{equation}
+    \dfrac{d^2}{dt^2}(M_X(t)) = \dfrac{d}{dt}\left( \dfrac{d}{dt}M_X(t) \right) = \dfrac{d}{dt}\left( \dfrac{\pi e^t}{(1 - qe^t)^2} \right) = \dfrac{\pi e^t(qe^t + 1)}{(1-qe^t)^3}
+\end{equation}
+If we set $t=0$, we have:
+\begin{equation}
+    \dfrac{d^2}{dt^2}(M_X(0))\bigg |_{t=0} = \dfrac{\pi(1 + q)}{(1-q)^3} = \dfrac{\pi(q +1)}{\pi^3} = \dfrac{(q +1)}{\pi^2}
+\end{equation}
+As such, we have:
+\begin{equation}
+    \text{Var}(X) = E[X^2] - (E[X])^2 = \dfrac{(q +1)}{\pi^2} - \dfrac{1}{\pi^2} = \dfrac{q}{\pi^2} = \dfrac{1 - \pi}{\pi^2}
+\end{equation}
+$\square$
+
+
+\subsection*{b)}
+By definition, in the sum of $X_1, X_2, \ldots, X_n$, we will have exactly $n$ successes, as each $X_i$ is the number of trials up to and including the $i$-th success. The sum of such $n$ random variables will require anything in the range $n, n+1, n+2, \ldots$ trials to achieve $n$ successes. This is exactly the model we are trying to desribe with the negative binomial distribution. \vspace{1em}
+Let $Y_n = \sum_{i=1}^{n} X_i$, then we have by i.i.d, that
+\begin{equation}
+    E[Y_n] = E[\sum_{i=1}^{n} X_i] = \sum_{i=1}^{n} E[X_i] = nE[X_1] = \dfrac{n}{\pi}
+\end{equation}
+Similarly for the variance, we have:
+\begin{equation}
+    \text{Var}(Y_n) = \text{Var}(\sum_{i=1}^{n} X_i) = \sum_{i=1}^{n} \text{Var}(X_i) = n\text{Var}(X_1) = \dfrac{n(1 - \pi)}{\pi^2}
+\end{equation}
+\subsection*{c)}
+Recall that the expected value of a product of indpendent random variables factorizes
+$$X \perp Y \implies E[XY] = E[X]E[Y]$$
+and if $X$ is a random variable, then $f(X)$ is also a random variable, thus we have that $E[f(X)g(Y)] = E[f(X)]E[g(Y)]$ for any functions $f$ and $g$. \vspace{1em}
+
+We have that the moment generating function of $Y_n$ is given by:
+\begin{equation}
+    M_{Y_n}(t) = E[e^{tY_n}] = E[e^{t\sum_{i=1}^{n} X_i}] = E[\prod_{i=1}^{n} e^{tX_i}] = \prod_{i=1}^{n} E[e^{tX_i}] = \prod_{i=1}^{n} M_{X_i}(t) = (M_{X_1}(t))^n
+\end{equation}
+Using the chain rule, we have that the derivative of $M_{Y_n}(t)$ is given by:
+\begin{equation}
+    \dfrac{d}{dt}M_{Y_n}(t) = \dfrac{d}{dt}(M_{X_1}(t))^n = n(M_{X_1}(t))^{n-1} \dfrac{d}{dt}M_{X_1}(t)
+\end{equation}
+As such, we can find the cumlant generating function of $Y_n$ by taking the logarithm of the moment generating function:
+\begin{equation}
+    K_{Y_n}(t) = \ln(M_{Y_n}(t)) = \ln((M_{X_1}(t))^n) = n\ln(M_{X_1}(t)).
+\end{equation}
+We know the value of $M_{X_1}(t)$ from part a), thus we have:
+\begin{equation}
+    K_{Y_n}(t) = n\ln\left(\dfrac{\pi e^t}{1 - (1 - \pi)e^t}\right) = n\left(t + \ln(\pi) - \ln(1 - (1 - \pi)e^t)\right) 
+\end{equation}
+The first derivative of the cumulant generating function is given by:
+\begin{equation}
+    \dfrac{d}{dt}K_{Y_n}(t) = n\left(1 - \dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right) = 
+\end{equation}
+Evaluating at $t=0$, we have:
+\begin{equation}
+    \dfrac{d}{dt}K_{Y_n}(0) = n\left(1 - \dfrac{(1 - \pi)}{1 - (1 - \pi)}\right) = n\left(1 + \dfrac{(1 - \pi)}{\pi}\right) = \dfrac{n}{\pi}
+\end{equation}
+The variance of $Y_n$ is given by the second derivative of the cumulant generating function, if we continue from (19), we have:
+\begin{equation}
+    \dfrac{d^2}{dt^2}K_{Y_n}(t) = n\dfrac{d}{dt}\left(\dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right) = n\dfrac{(1 - \pi)e^t}{((1 - (1 - \pi)e^t)^2}
+\end{equation}
+We can evaluate this at $t=0$ to find the variance of $Y_n$:
+\begin{equation}
+    \dfrac{d^2}{dt^2}K_{Y_n}(0) = n\dfrac{(1 - \pi)}{((1 - (1 - \pi))^2} =\dfrac{n(1 - \pi)}{\pi^2}
+\end{equation}
+$\square$
+\subsection*{d)}
+If we let $\pi = \frac{1}{2}$, then the probability of hitting $n+k$ trials before hitting $n$ successes is given by the negative binomial distribution:
+\begin{equation}
+    P(Y_n = n + k) = \binom{n + k - 1}{k} \left(\frac{1}{2}\right)^n \left(1 - \frac{1}{2}\right)^k = \binom{n + k - 1}{k} \left(\frac{1}{2}\right)^{n + k} = \binom{n + k - 1}{k} \frac{1}{2^{n+k}}
+\end{equation}
+Thus the sum
+$$ n \to \infty\quad \sum_{k=0}^{n}\binom{n + k - 1}{k} \frac{1}{2^{n+k}} = n \to \infty\quad \sum_{k=0}^{n}P(Y_n = n + k)$$
+This is a sum of disjoint events of independent random variables, thus we can express this as the probability of the union of these events
+\begin{equation}
+    \sum_{k=0}^{n}P(Y_n = n + k) = P(\bigcup_{k=0}^{n}Y_n = n + k) =P(\{Y_n = n\} \cup \{Y_n = n + 1\} \cup \ldots \cup \{Y_n = n + n\}) = P(n \leq Y_n \leq 2n)
+\end{equation}
+Then from $b)$, we know that we can express $Y_n$ as a sum of $n$ i.i.d. geometric random variables, thus we have:
+\begin{equation}
+    P(n \leq Y_n \leq 2n) = P( n \leq X_1 + X_2 + \ldots + X_n \leq 2n) = P(1 \leq \bar{X} \leq 2)
+\end{equation}
+We know from $a)$ that $X_i$ has finite mean and variance, thus we can apply the central limit theorem to find the limiting distribution of $\bar{X}$, let = $\mu = \frac{1}{\pi} = 2$ and $\sigma^2 = \frac{1 - \pi}{\pi^2}$, then
+\begin{equation}
+    P(1 \leq \bar{X} \leq 2) = P\left(\frac{1 - \mu}{\sigma/\sqrt{n}} \leq \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \leq \frac{2 - \mu}{\sigma/\sqrt{n}}\right) = P\left(\frac{1 - 2}{\sigma/\sqrt{n}} \leq Z_n \leq \frac{2 - 2}{\sigma/\sqrt{n}}\right) = P\left(\frac{-1}{\sigma/\sqrt{n}} \leq Z_n \leq 0\right).
+\end{equation}
+As we let $n \to \infty$, then
+\begin{equation}
+    \lim_{n \to \infty} P\left(\frac{-1}{\sigma/\sqrt{n}} \leq Z_n \leq 0\right) = P(-\infty \leq Z \leq 0) = P(Z \leq 0) = \dfrac{1}{2}
+\end{equation}
+$\square$
+\end{document}
