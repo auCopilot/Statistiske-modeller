@@ -131,49 +131,49 @@ We are given a geometrically distributed random variable $X$ with PMF:
  \end{equation}
 
 \subsection*{a)}
-We wish to find the moment generating function  of $X$. The MGF is defined as:
+We wish to find the moment generating function  of $X$. The MGF is defined as
 \begin{equation}
-    M_X(t) = E[e^{tX}] = \sum_{k=1}^{\infty} e^{tk} P(X=k) = \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} \pi
+    M_X(t) = E[e^{tX}] = \sum_{k=1}^{\infty} e^{tk} P(X=k) = \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} \pi.
 \end{equation}
-We can factor out $\pi$ and rewrite the sum:
+We can factor out $\pi$ and rewrite the sum
 \begin{equation}
-    M_X(t) = \pi \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} = \pi e^t \sum_{k=1}^{\infty} (e^t (1 - \pi))^{k - 1}
+    M_X(t) = \pi \sum_{k=1}^{\infty} e^{tk} (1 - \pi)^{k - 1} = \pi e^t \sum_{k=1}^{\infty} (e^t (1 - \pi))^{k - 1},
 \end{equation}
-now let $q = (1-\pi),$ then we have:
+now let $q = (1-\pi),$ then we have
 \begin{equation}
-    M_X(t) = \pi e^t \sum_{k=1}^{\infty} (e^t q)^{k - 1}
+    M_X(t) = \pi e^t \sum_{k=1}^{\infty} (e^t q)^{k - 1}.
 \end{equation}
-We can factor out one division of $q$ of the entire sum, and we have:
+We can factor out one division of $q$ of the entire sum
 \begin{equation}
     M_X(t) = \dfrac{\pi}{q} \sum_{k=0}^{\infty} (e^t q)^{k}
 \end{equation}
-Using the hint, we get a geometric series if $|e^t q| < 1$, since the is a product of strictly positive numbers, we can drop the absolute value and we have:
+Using the hint, we get a geometric series if $|e^t q| < 1$, since the is a product of strictly positive numbers, we can drop the absolute value, such that
 \begin{equation}
-    e^t q < 1 \implies t + \ln(q) < 0 \implies t < -\ln(q) = -\ln(1-\pi) \label{geom}
+    e^t q < 1 \implies t + \ln(q) < 0 \implies t < -\ln(q) = -\ln(1-\pi). \label{geom}
 \end{equation}
-Using the formula for the sum of a geometric series, provided we satisfy \eqref{geom}:
+Using the formula for the sum of a geometric series, provided we satisfy \eqref{geom}, then
 
 \begin{equation}
     M_X(t) = \dfrac{\pi}{q} \cdot \dfrac{e^tq}{1 - e^t q}  = \dfrac{\pi e^t}{1 - (1 - \pi)e^t}
 \end{equation}
-We can now use this moment generating function to find the mean and variance of $X$. We have:
+We can now use this moment generating function to find the mean and variance of $X$
 \begin{equation}
     \dfrac{d}{dt}(M_X(t)) = \dfrac{\pi}{q}  \dfrac{d}{dt}\left( \dfrac{e^tq}{1 - e^t q} \right) = \dfrac{\pi}{q} \cdot \dfrac{qe^t}{(1 - qe^t)^2} = \dfrac{\pi e^t}{(1 - qe^t)^2}
 \end{equation}
-Setting $t=0$, we have:
+Setting $t=0$, we get
 \begin{equation}
     \dfrac{d}{dt}(M_X(0))\bigg |_{t=0} = \dfrac{\pi}{(1 - q)^2} = \dfrac{\pi}{\pi^2} = \dfrac{1}{\pi}
 \end{equation}
-We can then find the variance using the formula $\text{Var}(X) = E[X^2] - (E[X])^2$. Using that $E[X]^2 = \dfrac{1}{\pi^2}$. We can find $E[X^2]$ by taking the second derivative of the moment generating function:
+We can then find the variance using the formula $\text{Var}(X) = E[X^2] - (E[X])^2$. Using that $E[X]^2 = \dfrac{1}{\pi^2}$. We can find $E[X^2]$ by taking the second derivative of the moment generating function
 
 \begin{equation}
-    \dfrac{d^2}{dt^2}(M_X(t)) = \dfrac{d}{dt}\left( \dfrac{d}{dt}M_X(t) \right) = \dfrac{d}{dt}\left( \dfrac{\pi e^t}{(1 - qe^t)^2} \right) = \dfrac{\pi e^t(qe^t + 1)}{(1-qe^t)^3}
+    \dfrac{d^2}{dt^2}(M_X(t)) = \dfrac{d}{dt}\left( \dfrac{d}{dt}M_X(t) \right) = \dfrac{d}{dt}\left( \dfrac{\pi e^t}{(1 - qe^t)^2} \right) = \dfrac{\pi e^t(qe^t + 1)}{(1-qe^t)^3}.
 \end{equation}
-If we set $t=0$, we have:
+If we set $t=0$, we arrive at
 \begin{equation}
-    \dfrac{d^2}{dt^2}(M_X(0))\bigg |_{t=0} = \dfrac{\pi(1 + q)}{(1-q)^3} = \dfrac{\pi(q +1)}{\pi^3} = \dfrac{(q +1)}{\pi^2}
+    \dfrac{d^2}{dt^2}(M_X(0))\bigg |_{t=0} = \dfrac{\pi(1 + q)}{(1-q)^3} = \dfrac{\pi(q +1)}{\pi^3} = \dfrac{(q +1)}{\pi^2}.
 \end{equation}
-As such, we have:
+as such
 \begin{equation}
     \text{Var}(X) = E[X^2] - (E[X])^2 = \dfrac{(q +1)}{\pi^2} - \dfrac{1}{\pi^2} = \dfrac{q}{\pi^2} = \dfrac{1 - \pi}{\pi^2}
 \end{equation}
@@ -186,7 +186,7 @@ Let $Y_n = \sum_{i=1}^{n} X_i$, then we have by i.i.d, that
 \begin{equation}
     E[Y_n] = E[\sum_{i=1}^{n} X_i] = \sum_{i=1}^{n} E[X_i] = nE[X_1] = \dfrac{n}{\pi}
 \end{equation}
-Similarly for the variance, we have:
+Similarly for the variance
 \begin{equation}
     \text{Var}(Y_n) = \text{Var}(\sum_{i=1}^{n} X_i) = \sum_{i=1}^{n} \text{Var}(X_i) = n\text{Var}(X_1) = \dfrac{n(1 - \pi)}{\pi^2}
 \end{equation}
@@ -195,35 +195,35 @@ Recall that the expected value of a product of indpendent random variables facto
 $$X \perp Y \implies E[XY] = E[X]E[Y]$$
 and if $X$ is a random variable, then $f(X)$ is also a random variable, thus we have that $E[f(X)g(Y)] = E[f(X)]E[g(Y)]$ for any functions $f$ and $g$. \vspace{1em}
 
-We have that the moment generating function of $Y_n$ is given by:
+We have that the moment generating function of $Y_n$ is given by
 \begin{equation}
-    M_{Y_n}(t) = E[e^{tY_n}] = E[e^{t\sum_{i=1}^{n} X_i}] = E[\prod_{i=1}^{n} e^{tX_i}] = \prod_{i=1}^{n} E[e^{tX_i}] = \prod_{i=1}^{n} M_{X_i}(t) = (M_{X_1}(t))^n
+    M_{Y_n}(t) = E[e^{tY_n}] = E[e^{t\sum_{i=1}^{n} X_i}] = E[\prod_{i=1}^{n} e^{tX_i}] = \prod_{i=1}^{n} E[e^{tX_i}] = \prod_{i=1}^{n} M_{X_i}(t) = (M_{X_1}(t))^n.
 \end{equation}
-Using the chain rule, we have that the derivative of $M_{Y_n}(t)$ is given by:
+Using the chain rule, we have that the derivative of $M_{Y_n}(t)$ 
 \begin{equation}
-    \dfrac{d}{dt}M_{Y_n}(t) = \dfrac{d}{dt}(M_{X_1}(t))^n = n(M_{X_1}(t))^{n-1} \dfrac{d}{dt}M_{X_1}(t)
+    \dfrac{d}{dt}M_{Y_n}(t) = \dfrac{d}{dt}(M_{X_1}(t))^n = n(M_{X_1}(t))^{n-1} \dfrac{d}{dt}M_{X_1}(t).
 \end{equation}
-As such, we can find the cumlant generating function of $Y_n$ by taking the logarithm of the moment generating function:
+As such, we can find the cumlant generating function of $Y_n$ by taking the logarithm of the moment generating function
 \begin{equation}
     K_{Y_n}(t) = \ln(M_{Y_n}(t)) = \ln((M_{X_1}(t))^n) = n\ln(M_{X_1}(t)).
 \end{equation}
-We know the value of $M_{X_1}(t)$ from part a), thus we have:
+We know the value of $M_{X_1}(t)$ from part a), thus
 \begin{equation}
-    K_{Y_n}(t) = n\ln\left(\dfrac{\pi e^t}{1 - (1 - \pi)e^t}\right) = n\left(t + \ln(\pi) - \ln(1 - (1 - \pi)e^t)\right) 
+    K_{Y_n}(t) = n\ln\left(\dfrac{\pi e^t}{1 - (1 - \pi)e^t}\right) = n\left(t + \ln(\pi) - \ln(1 - (1 - \pi)e^t)\right).
 \end{equation}
-The first derivative of the cumulant generating function is given by:
+The first derivative of the cumulant generating function is given by
 \begin{equation}
-    \dfrac{d}{dt}K_{Y_n}(t) = n\left(1 - \dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right) = 
+    \dfrac{d}{dt}K_{Y_n}(t) = n\left(1 - \dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right),
 \end{equation}
-Evaluating at $t=0$, we have:
+evaluated at $t=0$
 \begin{equation}
-    \dfrac{d}{dt}K_{Y_n}(0) = n\left(1 - \dfrac{(1 - \pi)}{1 - (1 - \pi)}\right) = n\left(1 + \dfrac{(1 - \pi)}{\pi}\right) = \dfrac{n}{\pi}
+    \dfrac{d}{dt}K_{Y_n}(0) = n\left(1 - \dfrac{(1 - \pi)}{1 - (1 - \pi)}\right) = n\left(1 + \dfrac{(1 - \pi)}{\pi}\right) = \dfrac{n}{\pi}.
 \end{equation}
-The variance of $Y_n$ is given by the second derivative of the cumulant generating function, if we continue from (19), we have:
+The variance of $Y_n$ is given by the second derivative of the cumulant generating function, if we continue from (19), we have
 \begin{equation}
-    \dfrac{d^2}{dt^2}K_{Y_n}(t) = n\dfrac{d}{dt}\left(\dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right) = n\dfrac{(1 - \pi)e^t}{((1 - (1 - \pi)e^t)^2}
+    \dfrac{d^2}{dt^2}K_{Y_n}(t) = n\dfrac{d}{dt}\left(\dfrac{(1 - \pi)e^t}{1 - (1 - \pi)e^t}\right) = n\dfrac{(1 - \pi)e^t}{((1 - (1 - \pi)e^t)^2}.
 \end{equation}
-We can evaluate this at $t=0$ to find the variance of $Y_n$:
+We can evaluate this at $t=0$ to find the variance of $Y_n$
 \begin{equation}
     \dfrac{d^2}{dt^2}K_{Y_n}(0) = n\dfrac{(1 - \pi)}{((1 - (1 - \pi))^2} =\dfrac{n(1 - \pi)}{\pi^2}
 \end{equation}
@@ -239,9 +239,9 @@ This is a sum of disjoint events of independent random variables, thus we can ex
 \begin{equation}
     \sum_{k=0}^{n}P(Y_n = n + k) = P(\bigcup_{k=0}^{n}Y_n = n + k) =P(\{Y_n = n\} \cup \{Y_n = n + 1\} \cup \ldots \cup \{Y_n = n + n\}) = P(n \leq Y_n \leq 2n)
 \end{equation}
-Then from $b)$, we know that we can express $Y_n$ as a sum of $n$ i.i.d. geometric random variables, thus we have:
+Then from $b)$, we know that we can express $Y_n$ as a sum of $n$ i.i.d. geometric random variables, as such
 \begin{equation}
-    P(n \leq Y_n \leq 2n) = P( n \leq X_1 + X_2 + \ldots + X_n \leq 2n) = P(1 \leq \bar{X} \leq 2)
+    P(n \leq Y_n \leq 2n) = P( n \leq X_1 + X_2 + \ldots + X_n \leq 2n) = P(1 \leq \bar{X} \leq 2).
 \end{equation}
 We know from $a)$ that $X_i$ has finite mean and variance, thus we can apply the central limit theorem to find the limiting distribution of $\bar{X}$, let = $\mu = \frac{1}{\pi} = 2$ and $\sigma^2 = \frac{1 - \pi}{\pi^2}$, then
 \begin{equation}
@@ -252,4 +252,55 @@ As we let $n \to \infty$, then
     \lim_{n \to \infty} P\left(\frac{-1}{\sigma/\sqrt{n}} \leq Z_n \leq 0\right) = P(-\infty \leq Z \leq 0) = P(Z \leq 0) = \dfrac{1}{2}
 \end{equation}
 $\square$
+
+\subsection*{e)}
+We now wish to find the exponential disperation representation of $Y_n$ for a fixed $n$. If we take the log of the PMF of $Y_n$ and let $\beta = \binom{k-1}{n-1}$, we arrive at
+\begin{equation}
+    \ln(P(Y_n = k))  = k\ln(1 - \pi) + n\left(\ln(\pi) - \ln(1 - \pi)\right) + \ln(\beta)
+\end{equation}
+Now, we define $theta = \ln(1 - \pi)$, and $b(\theta) = -n\left(\ln(\pi) - \theta\right)$. It is usefule to note that $\theta = \ln(1 - \pi) \implies e^{\theta} = 1 - \pi \implies \pi = 1 - e^{\theta}$. Thus we can rewrite $b(\theta)$ as
+
+\begin{equation}
+    b(\theta) = -n\left(\ln(1 - e^{\theta}) - \theta\right).
+\end{equation}
+We then arrive at the following representation of the log PMF
+\begin{equation}
+    \ln(P(Y_n = k)) = k\theta - b(\theta) + \ln(\beta).
+\end{equation}
+This gives that the dispersion paratameter $\phi = 1$, and the canonical link function is given by
+\begin{equation}
+    c(k, \phi) = \ln(\beta),
+\end{equation}
+Thus, we see that the negative binomial distribution is a exponential dispersion model
+\begin{equation}
+    P(Y_n = k) = \exp\left(\dfrac{k\theta - b(\theta)}{\phi} + c(k, \phi)\right).
+\end{equation}
+We may find the mean by taking the derivative of $b(\theta)$
+\begin{equation}
+    E[Y_n] = b'(\theta) = -n\left(\dfrac{-e^{\theta}}{1 - e^{\theta}} - 1\right) = -n\left(\dfrac{-(1 - \pi)}{\pi} - 1\right) = -n\left(\dfrac{-1}{\pi} + 1 - 1 \right) = \dfrac{n}{\pi},
+\end{equation}
+which is consistent with our previous results. We can find the variance by taking the second derivative of $b(\theta)$, since $\phi = 1$, we have
+\begin{equation}
+    \text{Var}(Y_n) = b''(\theta) = -n\left(\dfrac{-e^{\theta}}{(1 - e^{\theta})^2} \right) = -n\left(\dfrac{-(1 - \pi)}{\pi^2} \right) = \dfrac{n(1 - \pi)}{\pi^2},
+\end{equation}
+which is also consistent with our previous results. $\square$
+\subsection*{f1)}
+We can use that the moment generating function of $\tilde{X}_\pi = \frac{\pi}{1 - \pi}X$ is a linear transformation of the moment generating function of $X$, such that \footnote{\url{https://en.wikipedia.org/wiki/Moment_generating_function}}
+\begin{equation}
+    M_{\tilde{X}_\pi}(t) = M_{X}(\dfrac{\pi}{1 - \pi}t).
+\end{equation}
+As such,
+\begin{equation}
+    M_{\tilde{X}_\pi}(t) = \dfrac{\pi e^{\frac{\pi}{1 - \pi}t}}{1 - (1 - \pi)e^{\frac{\pi}{1 - \pi}t}}.
+\end{equation}
+Now let
+$$g(\pi) = \pi e^{t\frac{\pi}{1 - \pi}} \quad h(\pi) = 1 - (1 - \pi)e^{\frac{\pi}{1 - \pi}t},$$
+then we have
+$$g'(\pi) = e^{t\frac{\pi}{1 - \pi}} +\pi e^{t\frac{\pi}{1 - \pi}}\dfrac{1}{(1 - \pi)^2} \quad h'(\pi) =  -e^{\frac{\pi}{1 - \pi}t} + (1 - \pi)e^{\frac{\pi}{1 - \pi}t} \cdot \frac{1}{(1 - \pi)^2}.$$
+If we use l'Hopital's rule, we have that
+\begin{equation}
+    \lim_{\pi \to 0} M_{\tilde{X}_\pi}(t) = \lim_{\pi \to 0} \dfrac{g'(\pi)}{h'(\pi)} = \dfrac{e^t}{1-e^t} =
+\end{equation}
+
+
 \end{document}
